@@ -2,10 +2,18 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import QuestionForm from "./components/QuestionForm/QuestionForm";
 import AnalysisResult from "./components/AnalysisResult/AnalysisResult";
+import StartPage from "./components/StartPage/StartPage";
+import LoadingSpinnerWithAdsAndDots from "./components/Loading/Loading";
 
 const API_URL = "https://opusdeisong.co.kr";
 
 function App() {
+  const [isStarted, setIsStarted] = useState(false);
+
+  const handleStart = () => {
+    setIsStarted(true);
+  };
+
   const [questions, setQuestions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -39,7 +47,12 @@ function App() {
   };
 
   if (isLoading) {
-    return <div>분석 중입니다...</div>;
+    return (
+      <div>
+        <h1>My App</h1>
+        <LoadingSpinnerWithAdsAndDots />
+      </div>
+    );
   }
 
   if (result) {
@@ -52,11 +65,17 @@ function App() {
 
   return (
     <div>
-      <h1>성격 분석 설문</h1>
-      {questions.length > 0 ? (
-        <QuestionForm questions={questions} onSubmit={handleSubmit} />
+      {!isStarted ? (
+        <StartPage onStart={handleStart} />
       ) : (
-        <div>질문을 불러오는 중입니다...</div>
+        <div>
+          <h1>성격 분석 설문</h1>
+          {questions.length > 0 ? (
+            <QuestionForm questions={questions} onSubmit={handleSubmit} />
+          ) : (
+            <div>질문을 불러오는 중입니다...</div>
+          )}
+        </div>
       )}
     </div>
   );
