@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Alert, AlertDescription } from "../Alert/Alert";
 import ProgressBar from "../ProgressBar/ProgressBar";
 
-const MAX_CHARS = 600;
+const MAX_CHARS = 300;
 
 function QuestionForm({ questions, onSubmit }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -48,7 +48,7 @@ function QuestionForm({ questions, onSubmit }) {
   };
 
   const charCount = currentAnswer.length;
-  const isNearLimit = charCount >= 500;
+  const isNearLimit = charCount >= 280;
 
   return (
     <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
