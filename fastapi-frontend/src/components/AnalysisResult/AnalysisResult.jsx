@@ -1,8 +1,25 @@
 import React from "react";
 import PropTypes from "prop-types";
 import LionImage from "../LionImage/LionImage";
+import { useState, useEffect } from "react";
+import axios from "axios";
+const API_URL = "http://www.opusdeisong.co.kr/questions";
 
-function AnalysisResult({ result, state }) {
+function AnalysisResult({ result }) {
+  const [state, setState] = useState(null);
+
+  useEffect(() => {
+    async function getStats() {
+      try {
+        const response = await axios.get(`${API_URL}/stats`);
+        setState(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getStats();
+  }, []);
+
   return (
     <div className="analysis-container">
       <div className="lion-type-section">
