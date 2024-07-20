@@ -2,18 +2,38 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import LionImage from "../LionImage/LionImage";
 import axios from "axios";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
 const API_URL = "https://opusdeisong.co.kr";
+
+const COLORS = [
+  "#0088FE",
+  "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#8884d8",
+  "#82ca9d",
+  "#a4de6c",
+  "#d0ed57",
+];
 
 function AnalysisResult({ result }) {
   const [state, setState] = useState(null);
   const [error, setError] = useState(null);
+  const [userTypeCount, setUserTypeCount] = useState(null);
 
   useEffect(() => {
     async function getStats() {
       try {
         const response = await axios.get(`${API_URL}/stats`);
         setState(response.data);
+        const totalTests = response.data.total_tests;
+        const userTypePercentage =
+          response.data.lion_type_percentages[result.hanyang_lion_type.type];
+        const approximateCount = Math.round(
+          totalTests * (userTypePercentage / 100)
+        );
+        setUserTypeCount(approximateCount);
       } catch (error) {
         console.error(error);
         setError("통계 정보를 불러오는데 실패했습니다.");
@@ -29,6 +49,10 @@ function AnalysisResult({ result }) {
   if (!state) {
     return <div className="loading-message">통계 정보를 불러오는 중...</div>;
   }
+
+  const chartData = Object.entries(state.lion_type_percentages)
+    .map(([name, value]) => ({ name, value }))
+    .sort((a, b) => b.value - a.value); // 내림차순 정렬
 
   return (
     <div className="analysis-container">
@@ -58,18 +82,43 @@ function AnalysisResult({ result }) {
         </div>
       </div>
       <div className="test-statistics">
-        <h2>테스트 통계</h2>
-        <p>총 테스트 횟수: {state.total_tests}</p>
-        <h3>사자 유형 비율:</h3>
-        <ul>
-          {Object.entries(state.lion_type_percentages).map(
-            ([type, percentage]) => (
-              <li key={type}>
-                {type}: {percentage}%
-              </li>
-            )
-          )}
-        </ul>
+        <h2>
+          당신은 한양대의 {userTypeCount}번째 {result.hanyang_lion_type.type}
+          입니다!
+        </h2>
+        <p></p>
+        <h3>한양대에는 어떤 유형의 사자들이 있을까요?</h3>
+        <p>
+          현재 총 {state.total_tests}명이 한양 라이언 유형 테스트를
+          진행했습니다.
+          <br />
+          아래의 그래프를 눌러 어떤 유형의 사자들이 있는지 확인해보세요 !{" "}
+        </p>
+        <div style={{ width: "100%", height: 400 }}>
+          <ResponsiveContainer>
+            <PieChart>
+              <Pie
+                data={chartData}
+                cx="50%"
+                cy="50%"
+                outerRadius={120}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                {chartData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+              <Tooltip
+                formatter={(value, name) => [`${value.toFixed(2)}%`, name]}
+                labelFormatter={(index) => chartData[index].name}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
       </div>
       <style jsx>{`
         .analysis-container {
@@ -86,7 +135,6 @@ function AnalysisResult({ result }) {
           margin-bottom: 30px;
         }
         .lion-description {
-          // font-style: italic;
           color: #555;
         }
         .detailed-analysis {
@@ -107,13 +155,6 @@ function AnalysisResult({ result }) {
           background-color: #ecf0f1;
           padding: 20px;
           border-radius: 5px;
-        }
-        ul {
-          list-style-type: none;
-          padding: 0;
-        }
-        li {
-          margin-bottom: 5px;
         }
         .error-message,
         .loading-message {
