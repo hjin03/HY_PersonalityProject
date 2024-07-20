@@ -86,7 +86,7 @@ function AnalysisResult({ result }) {
           margin-bottom: 30px;
         }
         .lion-description {
-          font-style: italic;
+          // font-style: italic;
           color: #555;
         }
         .detailed-analysis {

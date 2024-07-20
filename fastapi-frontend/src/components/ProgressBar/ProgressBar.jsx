@@ -32,7 +32,7 @@ const ProgressBar = ({ currentPage, totalPages }) => {
   const barStyle = {
     width: `${progress}%`,
     height: "100%",
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#3498DB",
     borderRadius: "8px",
     transition: "width 0.5s ease-in-out",
   };
@@ -41,6 +41,7 @@ const ProgressBar = ({ currentPage, totalPages }) => {
     marginTop: "15px",
     textAlign: "right",
     fontWeight: "bold",
+    color: "#2C3D50",
   };
 
   return (

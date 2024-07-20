@@ -5,18 +5,18 @@ const LoadingSpinnerWithAdsAndDots = () => {
 
   const ads = [
     {
-      title: "한양대 심리상담센터",
-      content: "전문 상담으로 더 나은 나를 만나세요!",
+      title: "쿠팡",
+      content: "이 검사는 광고를 포함하고 싶습니다.",
       link: "#",
     },
     {
-      title: "성격별 추천 도서",
-      content: "당신의 성격에 맞는 책을 찾아보세요.",
+      title: "네이버",
+      content: "이 검사는 광고를 포함하고 싶습니다.",
       link: "#",
     },
     {
-      title: "주말 자기계발 워크샵",
-      content: "이번 주말, 나를 더 알아가는 시간!",
+      title: "카카오 게임즈",
+      content: "이 검사는 광고를 포함하고 싶습니다.",
       link: "#",
     },
   ];
@@ -52,7 +52,7 @@ const LoadingSpinnerWithAdsAndDots = () => {
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            height: 89vh;
             font-family: Arial, sans-serif;
           }
           .spinner {

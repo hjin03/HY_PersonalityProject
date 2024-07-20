@@ -13,6 +13,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
+  const [state, setState] = useState(null);
 
   const handleStart = () => {
     setIsStarted(true);
@@ -30,6 +31,16 @@ function App() {
         setIsLoading(false);
       }
     }
+    async function getStats() {
+      try {
+        const response = await axios.get(`${API_URL}/stats`);
+        setState(response.data);
+      } catch (error) {
+        console.error(error);
+        setError("통계 정보를 불러오는데 실패했습니다.");
+      }
+    }
+    getStats();
 
     getQuestions();
   }, []);
@@ -56,7 +67,6 @@ function App() {
   if (isLoading) {
     return (
       <div>
-        <h1>My App</h1>
         <LoadingSpinnerWithAdsAndDots />
       </div>
     );
@@ -83,7 +93,7 @@ function App() {
   return (
     <div>
       {!isStarted ? (
-        <StartPage onStart={handleStart} />
+        <StartPage onStart={handleStart} stats={state.total_tests} />
       ) : (
         <div>
           <br />
