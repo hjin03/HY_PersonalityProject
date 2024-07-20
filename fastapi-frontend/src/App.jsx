@@ -5,7 +5,7 @@ import AnalysisResult from "./components/AnalysisResult/AnalysisResult";
 import StartPage from "./components/StartPage/StartPage";
 import LoadingSpinnerWithAdsAndDots from "./components/Loading/Loading";
 
-const API_URL = "http://opusdeisong.co.kr";
+const API_URL = "https://opusdeisong.co.kr";
 
 function App() {
   const [isStarted, setIsStarted] = useState(false);
@@ -17,34 +17,37 @@ function App() {
   const [questions, setQuestions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [state, setState] = useState(null);
 
   useEffect(() => {
-    async function getQuestion() {
-      try {
-        const response = await axios.get(`${API_URL}/questions`);
+    axios
+      .get(`${API_URL}/questions`)
+      .then((response) => {
+        console.log("hi");
+        console.log(response.data.questions);
         setQuestions(response.data.questions);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getQuestion();
+      })
+      .catch((error) => console.error("Error fetching questions:", error));
+    axios
+      .get(`${API_URL}/stats`)
+      .then((response) => setState(response.data))
+      .catch((error) => console.error("Error fetching states:", error));
+    // console.log(questions);
+    console.log(state);
   }, []);
-
-  async function postResult(answers) {
-    try {
-      const response = await axios.post(`${API_URL}/analyze_answers`, {
-        answers,
-      });
-      setResult(response.data);
-      setIsLoading(false);
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   const handleSubmit = (answers) => {
     setIsLoading(true);
-    postResult(answers);
+    axios
+      .post(`${API_URL}/analyze_answers`, { answers })
+      .then((response) => {
+        setResult(response.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error submitting answers:", error);
+        setIsLoading(false);
+      });
   };
 
   if (isLoading) {
@@ -59,7 +62,7 @@ function App() {
   if (result) {
     return (
       <div>
-        <AnalysisResult result={result} />
+        <AnalysisResult result={result} state={state} />
       </div>
     );
   }
