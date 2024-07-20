@@ -5,7 +5,7 @@ import AnalysisResult from "./components/AnalysisResult/AnalysisResult";
 import StartPage from "./components/StartPage/StartPage";
 import LoadingSpinnerWithAdsAndDots from "./components/Loading/Loading";
 
-const API_URL = "https://opusdeisong.co.kr";
+const API_URL = "http://www.opusdeisong.co.kr/questions";
 
 function App() {
   const [isStarted, setIsStarted] = useState(false);
