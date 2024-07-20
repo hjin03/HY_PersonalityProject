@@ -9,45 +9,48 @@ const API_URL = "https://opusdeisong.co.kr";
 
 function App() {
   const [isStarted, setIsStarted] = useState(false);
+  const [questions, setQuestions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [result, setResult] = useState(null);
 
   const handleStart = () => {
     setIsStarted(true);
   };
 
-  const [questions, setQuestions] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [result, setResult] = useState(null);
-  const [state, setState] = useState(null);
-
   useEffect(() => {
-    axios
-      .get(`${API_URL}/questions`)
-      .then((response) => {
-        console.log("hi");
-        console.log(response.data.questions);
+    async function getQuestions() {
+      try {
+        const response = await axios.get(`${API_URL}/questions`);
         setQuestions(response.data.questions);
-      })
-      .catch((error) => console.error("Error fetching questions:", error));
-    axios
-      .get(`${API_URL}/stats`)
-      .then((response) => setState(response.data))
-      .catch((error) => console.error("Error fetching states:", error));
-    // console.log(questions);
-    console.log(state);
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+        setError("질문을 불러오는데 실패했습니다. 다시 시도해 주세요.");
+        setIsLoading(false);
+      }
+    }
+
+    getQuestions();
   }, []);
 
-  const handleSubmit = (answers) => {
+  async function postResult(answers) {
     setIsLoading(true);
-    axios
-      .post(`${API_URL}/analyze_answers`, { answers })
-      .then((response) => {
-        setResult(response.data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error submitting answers:", error);
-        setIsLoading(false);
+    try {
+      const response = await axios.post(`${API_URL}/analyze_answers`, {
+        answers,
       });
+      setResult(response.data);
+    } catch (error) {
+      console.error(error);
+      setError("결과 분석 중 오류가 발생했습니다. 다시 시도해 주세요.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  const handleSubmit = (answers) => {
+    postResult(answers);
   };
 
   if (isLoading) {
@@ -59,10 +62,20 @@ function App() {
     );
   }
 
+  if (error) {
+    return (
+      <div>
+        <h1>오류 발생</h1>
+        <p>{error}</p>
+        <button onClick={() => window.location.reload()}>다시 시도</button>
+      </div>
+    );
+  }
+
   if (result) {
     return (
       <div>
-        <AnalysisResult result={result} state={state} />
+        <AnalysisResult result={result} />
       </div>
     );
   }
@@ -74,8 +87,6 @@ function App() {
       ) : (
         <div>
           <br />
-
-          {/* <h1 style={{ textAlign: "center" }}>한양 라이언 테스트</h1> */}
           {questions.length > 0 ? (
             <QuestionForm questions={questions} onSubmit={handleSubmit} />
           ) : (

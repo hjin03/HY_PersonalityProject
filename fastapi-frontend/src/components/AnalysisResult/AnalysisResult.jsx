@@ -1,8 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import LionImage from "../LionImage/LionImage";
+import axios from "axios";
 
-function AnalysisResult({ result, state }) {
+const API_URL = "https://opusdeisong.co.kr";
+
+function AnalysisResult({ result }) {
+  const [state, setState] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function getStats() {
+      try {
+        const response = await axios.get(`${API_URL}/stats`);
+        setState(response.data);
+      } catch (error) {
+        console.error(error);
+        setError("통계 정보를 불러오는데 실패했습니다.");
+      }
+    }
+    getStats();
+  }, []);
+
+  if (error) {
+    return <div className="error-message">{error}</div>;
+  }
+
+  if (!state) {
+    return <div className="loading-message">통계 정보를 불러오는 중...</div>;
+  }
+
   return (
     <div className="analysis-container">
       <div className="lion-type-section">
@@ -11,7 +38,6 @@ function AnalysisResult({ result, state }) {
         <LionImage imageUrl={result.image_url} />
         <p className="lion-description">{result.hanyang_lion_type.details}</p>
       </div>
-
       <div className="detailed-analysis">
         <h2>상세 분석 결과</h2>
         <div className="analysis-item">
@@ -31,7 +57,6 @@ function AnalysisResult({ result, state }) {
           <p>{result.future_suggestions}</p>
         </div>
       </div>
-
       <div className="test-statistics">
         <h2>테스트 통계</h2>
         <p>총 테스트 횟수: {state.total_tests}</p>
@@ -46,7 +71,6 @@ function AnalysisResult({ result, state }) {
           )}
         </ul>
       </div>
-
       <style jsx>{`
         .analysis-container {
           font-family: Arial, sans-serif;
@@ -57,54 +81,48 @@ function AnalysisResult({ result, state }) {
           border-radius: 10px;
           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
         .lion-type-section {
           text-align: center;
           margin-bottom: 30px;
         }
-
-        .lion-image {
-          max-width: 300px;
-          border-radius: 10px;
-          margin: 20px 0;
-        }
-
         .lion-description {
           font-style: italic;
           color: #555;
         }
-
         .detailed-analysis {
           margin-bottom: 30px;
         }
-
         .analysis-item {
           margin-bottom: 20px;
         }
-
         h2 {
           color: #2c3e50;
           border-bottom: 2px solid #3498db;
           padding-bottom: 10px;
         }
-
         h3 {
           color: #34495e;
         }
-
         .test-statistics {
           background-color: #ecf0f1;
           padding: 20px;
           border-radius: 5px;
         }
-
         ul {
           list-style-type: none;
           padding: 0;
         }
-
         li {
           margin-bottom: 5px;
+        }
+        .error-message,
+        .loading-message {
+          text-align: center;
+          color: #e74c3c;
+          font-weight: bold;
+        }
+        .loading-message {
+          color: #3498db;
         }
       `}</style>
     </div>
@@ -122,10 +140,6 @@ AnalysisResult.propTypes = {
       details: PropTypes.string.isRequired,
     }).isRequired,
     image_url: PropTypes.string.isRequired,
-  }).isRequired,
-  state: PropTypes.shape({
-    total_tests: PropTypes.number.isRequired,
-    lion_type_percentages: PropTypes.objectOf(PropTypes.number).isRequired,
   }).isRequired,
 };
 
