@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import LionImage from "../LionImage/LionImage";
 import axios from "axios";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
-import ImageDownloadButton from "../DownloadButton/DownloadButton";
-
 const API_URL = "https://opusdeisong.co.kr";
 
 const COLORS = [
@@ -22,6 +20,7 @@ function AnalysisResult({ result }) {
   const [state, setState] = useState(null);
   const [error, setError] = useState(null);
   const [userTypeCount, setUserTypeCount] = useState(null);
+  const resultRef = useRef(null);
 
   useEffect(() => {
     async function getStats() {
@@ -58,14 +57,14 @@ function AnalysisResult({ result }) {
   return (
     <div className="analysis-container">
       <div className="lion-type-section">
-        <h2>한양 라이언 유형</h2>
+        <h2>나의 한양 라이언 유형은?</h2>
         <h3>{result.hanyang_lion_type.type}</h3>
         <LionImage imageUrl={result.image_url} />
         {/* <ImageDownloadButton
           imageUrl={result.image_url}
           fileName={`${result.hanyang_lion_type.type}.png`}
-        />
-        <p className="lion-description">{result.hanyang_lion_type.details}</p> */}
+        />*/}
+        <p className="lion-description">{result.hanyang_lion_type.details}</p>
       </div>
       <div className="detailed-analysis">
         <h2>상세 분석 결과</h2>
@@ -106,7 +105,7 @@ function AnalysisResult({ result }) {
                 data={chartData}
                 cx="50%"
                 cy="50%"
-                outerRadius={145}
+                outerRadius={140}
                 fill="#8884d8"
                 dataKey="value"
               >

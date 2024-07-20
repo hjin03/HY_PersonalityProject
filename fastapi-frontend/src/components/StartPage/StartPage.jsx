@@ -21,7 +21,7 @@ const StartPage = ({ onStart, stats }) => {
           color: "#2C3D50",
         }}
       >
-        한양 라이언 유형 검사
+        한양 라이언 유형 테스트
       </h1>
       <div
         style={{
@@ -50,8 +50,8 @@ const StartPage = ({ onStart, stats }) => {
         당신은 어떤 사자인가요?
       </p>
       <p style={{ fontSize: "0.8em" }}>
-        지금까지 총 <span style={{ color: "skyblue" }}>{stats}명</span>이 검사를
-        진행했어요!
+        지금까지 총 <span style={{ color: "skyblue" }}>{stats}명</span>이
+        테스트를 진행했어요!
       </p>
       <button
         onClick={onStart}

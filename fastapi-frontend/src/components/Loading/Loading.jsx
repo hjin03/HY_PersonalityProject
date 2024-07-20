@@ -6,17 +6,17 @@ const LoadingSpinnerWithAdsAndDots = () => {
   const ads = [
     {
       title: "쿠팡",
-      content: "이 검사는 광고를 포함하고 싶습니다.",
+      content: "본 검사는 광고를 포함하고 싶습니다.",
       link: "#",
     },
     {
       title: "네이버",
-      content: "이 검사는 광고를 포함하고 싶습니다.",
+      content: "본 검사는 광고를 포함하고 싶습니다.",
       link: "#",
     },
     {
       title: "카카오 게임즈",
-      content: "이 검사는 광고를 포함하고 싶습니다.",
+      content: "본 검사는 광고를 포함하고 싶습니다.",
       link: "#",
     },
   ];
