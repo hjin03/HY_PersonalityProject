@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import LionImage from "../LionImage/LionImage";
 
 function AnalysisResult({ result, state }) {
   return (
@@ -7,7 +8,7 @@ function AnalysisResult({ result, state }) {
       <div className="lion-type-section">
         <h2>한양 라이언 유형</h2>
         <h3>{result.hanyang_lion_type.type}</h3>
-        <img src={result.image_url} alt="한양 라이언" className="lion-image" />
+        <LionImage imageUrl={result.image_url} />
         <p className="lion-description">{result.hanyang_lion_type.details}</p>
       </div>
 

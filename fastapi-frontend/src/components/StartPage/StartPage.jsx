@@ -3,10 +3,49 @@ import PropTypes from "prop-types";
 
 const StartPage = ({ onStart }) => {
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1 style={{ fontSize: "2em", marginBottom: "20px" }}>성격 분석 설문</h1>
-      <p style={{ fontSize: "1.2em", marginBottom: "30px" }}>
-        이 설문을 통해 당신의 성격을 분석해보세요. 시작할 준비가 되셨나요?
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "80vh",
+        textAlign: "center",
+        padding: "0 20px",
+      }}
+    >
+      <h1
+        style={{
+          fontSize: "2em",
+          marginBottom: "20px",
+        }}
+      >
+        한양 라이언 유형 검사
+      </h1>
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "300px",
+          marginBottom: "20px",
+        }}
+      >
+        <img
+          src="lionImg.png"
+          alt="한양 라이언"
+          style={{
+            width: "100%",
+            height: "auto",
+            objectFit: "contain",
+          }}
+        />
+      </div>
+      <p
+        style={{
+          fontSize: "1.2em",
+          marginBottom: "30px",
+        }}
+      >
+        당신은 어떤 사자인가요?
       </p>
       <button
         onClick={onStart}

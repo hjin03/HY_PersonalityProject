@@ -22,7 +22,11 @@ function App() {
   useEffect(() => {
     axios
       .get(`${API_URL}/questions`)
-      .then((response) => setQuestions(response.data.questions))
+      .then((response) => {
+        console.log("hi");
+        console.log(response.data.questions);
+        setQuestions(response.data.questions);
+      })
       .catch((error) => console.error("Error fetching questions:", error));
     axios
       .get(`${API_URL}/stats`)
@@ -69,7 +73,9 @@ function App() {
         <StartPage onStart={handleStart} />
       ) : (
         <div>
-          <h1>성격 분석 설문</h1>
+          <br />
+
+          {/* <h1 style={{ textAlign: "center" }}>한양 라이언 테스트</h1> */}
           {questions.length > 0 ? (
             <QuestionForm questions={questions} onSubmit={handleSubmit} />
           ) : (

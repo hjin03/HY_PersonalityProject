@@ -5,18 +5,19 @@ const ProgressBar = ({ currentPage, totalPages }) => {
   const progress = (currentPage / totalPages) * 100;
 
   const containerStyle = {
-    marginTop: "50px",
+    marginTop: "70px",
     position: "relative",
   };
 
   const lionStyle = {
     position: "absolute",
-    top: "-30px",
+    top: "-50px",
     left: `${progress}%`,
     transform: "translateX(-50%)",
     fontSize: "30px",
     transition: "left 0.5s ease-in-out",
     animation: "lionJump 0.5s infinite alternate",
+    zIndex: "10",
   };
 
   const barContainerStyle = {
@@ -52,8 +53,8 @@ const ProgressBar = ({ currentPage, totalPages }) => {
       <style>
         {`
           @keyframes lionJump {
-            0% { top: -30px; }
-            100% { top: -40px; }
+            0% { top: -40px; }
+            100% { top: -50px; }
           }
         `}
       </style>

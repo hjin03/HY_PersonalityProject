@@ -23,7 +23,7 @@ function QuestionForm({ questions, onSubmit }) {
   return (
     <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
       <h2 style={{ fontSize: "1.5em", marginBottom: "10px" }}>
-        질문 {currentQuestionIndex + 1}
+        질문 {currentQuestionIndex + 1} 🦁
       </h2>
       <p style={{ fontSize: "1.2em", marginBottom: "20px" }}>
         {questions[currentQuestionIndex]}
