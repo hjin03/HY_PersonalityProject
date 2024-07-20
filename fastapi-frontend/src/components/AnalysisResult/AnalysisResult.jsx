@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import LionImage from "../LionImage/LionImage";
 import axios from "axios";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import ImageDownloadButton from "../DownloadButton/DownloadButton";
 
 const API_URL = "https://opusdeisong.co.kr";
 
@@ -60,7 +61,11 @@ function AnalysisResult({ result }) {
         <h2>한양 라이언 유형</h2>
         <h3>{result.hanyang_lion_type.type}</h3>
         <LionImage imageUrl={result.image_url} />
-        <p className="lion-description">{result.hanyang_lion_type.details}</p>
+        {/* <ImageDownloadButton
+          imageUrl={result.image_url}
+          fileName={`${result.hanyang_lion_type.type}.png`}
+        />
+        <p className="lion-description">{result.hanyang_lion_type.details}</p> */}
       </div>
       <div className="detailed-analysis">
         <h2>상세 분석 결과</h2>
@@ -101,7 +106,7 @@ function AnalysisResult({ result }) {
                 data={chartData}
                 cx="50%"
                 cy="50%"
-                outerRadius={120}
+                outerRadius={145}
                 fill="#8884d8"
                 dataKey="value"
               >

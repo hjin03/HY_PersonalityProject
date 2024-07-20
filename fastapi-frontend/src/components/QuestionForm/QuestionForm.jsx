@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Alert, AlertDescription } from "../Alert/Alert";
 import ProgressBar from "../ProgressBar/ProgressBar";
 
-const MAX_CHARS = 1000;
+const MAX_CHARS = 600;
 
 function QuestionForm({ questions, onSubmit }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -48,21 +48,49 @@ function QuestionForm({ questions, onSubmit }) {
   };
 
   const charCount = currentAnswer.length;
-  const isNearLimit = charCount >= 900;
+  const isNearLimit = charCount >= 500;
 
   return (
     <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
-      <h2 style={{ fontSize: "1em", marginBottom: "5px" }}>
+      <h2
+        style={{
+          fontSize: "1em",
+          marginBottom: "5px",
+          borderBottom: "1px solid #3498db",
+          paddingBottom: "10px", // 추가: 텍스트와 밑줄 사이의 간격을 위해
+        }}
+      >
         한양 라이언 유형 검사
       </h2>
       <ProgressBar
         currentPage={currentQuestionIndex + 1}
         totalPages={questions.length}
       />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          marginBottom: "20px",
+          marginTop: "20px",
+          marginBottom: "20px",
+        }}
+      >
+        <div
+          style={{
+            flexShrink: 0,
+            marginRight: "20px",
+            fontWeight: "bold",
+            fontSize: "1.2em",
+            minWidth: "40px",
+          }}
+        >
+          Q{currentQuestionIndex + 1}.
+        </div>
+        <div style={{ flex: 1 }}>
+          <p style={{ margin: 0 }}>{questions[currentQuestionIndex]}</p>
+        </div>
+      </div>
 
-      <p style={{ marginBottom: "20px" }}>
-        Q{currentQuestionIndex + 1}. {questions[currentQuestionIndex]}
-      </p>
       <textarea
         value={currentAnswer}
         onChange={handleInputChange}
