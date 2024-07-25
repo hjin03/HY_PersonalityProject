@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const LoadingSpinnerWithAdsAndDots = () => {
   const [currentAdIndex, setCurrentAdIndex] = useState(0);
 
-  const ads = [
+  interface Ads {
+    title: string;
+    content: string;
+    link: string;
+  }
+  const ads: Ads[] = [
     {
       title: "쿠팡",
       content: "본 검사는 광고를 포함하고 싶습니다.",
