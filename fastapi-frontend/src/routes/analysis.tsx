@@ -231,12 +231,15 @@ export default function AnalysisPage() {
   console.log(stat);
 
   return (
-    // <div>
+    // <>
     <AnalysisContainer>
       <LionTypeSection>
         <ItemH2>나의 한양 라이언 유형은?</ItemH2>
         <h3>{result.hanyang_lion_type?.type}</h3>
         <LionImage imageUrl={result.image_url} />
+        <div style={{ fontSize: "0.5rem", color: "gray" }}>
+          꾹 눌러 이미지 저장하기
+        </div>
         <LionDescription>{result.hanyang_lion_type?.details}</LionDescription>
       </LionTypeSection>
       <DetailedAnalysis>

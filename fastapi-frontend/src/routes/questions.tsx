@@ -1,5 +1,5 @@
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ProgressBar from "../components/ProgressBar/ProgressBar";
 
@@ -34,6 +34,7 @@ export default function QuestionForm() {
       setShowProgressBar(true);
     }
   }, [questions]);
+
   const convertAnswersToAnswerForm = (answers: string[]): AnswerForm => {
     return {
       answers: answers.map((content) => ({ content })),
@@ -88,6 +89,7 @@ export default function QuestionForm() {
     if (questions && currentQuestionIndex < questions.questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
       setCurrentAnswer("");
+      setShowWarning(false); // 경고 메시지 초기화
     } else {
       // 마지막 질문일 경우
       setAnswers((prev) => {
@@ -97,8 +99,6 @@ export default function QuestionForm() {
         return finalAnswers;
       });
     }
-
-    setShowWarning(false);
   };
 
   const handlePrevious = () => {
@@ -109,12 +109,14 @@ export default function QuestionForm() {
         return updatedAnswers;
       });
       setCurrentQuestionIndex((prev) => prev - 1);
+      setShowWarning(false); // 이전 버튼 클릭 시 경고 메시지 초기화
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value.slice(0, MAX_CHARS);
     setCurrentAnswer(newValue);
+    setShowWarning(false); // 입력 시 경고 메시지 초기화
   };
 
   if (isLoading) {
@@ -177,23 +179,48 @@ export default function QuestionForm() {
         </div>
       </div>
 
-      <textarea
-        ref={textareaRef}
-        value={currentAnswer}
-        onChange={handleInputChange}
+      <div style={{ position: "relative", marginBottom: "20px" }}>
+        <textarea
+          ref={textareaRef}
+          value={currentAnswer}
+          onChange={handleInputChange}
+          style={{
+            width: "96%",
+            minHeight: "100px",
+            padding: "10px",
+            fontSize: "16px",
+          }}
+        />
+      </div>
+
+      <div
         style={{
-          width: "100%",
-          minHeight: "100px",
+          textAlign: "right",
           marginBottom: "10px",
-          padding: "10px",
           fontSize: "16px",
+          color: currentAnswer.length === MAX_CHARS ? "red" : "gray",
         }}
-      />
+      >
+        {currentAnswer.length}/{MAX_CHARS}
+      </div>
+
       {showWarning && (
-        <p style={{ color: "red", marginBottom: "10px" }}>
+        <div
+          style={{
+            padding: "10px 16px",
+            borderRadius: "4px",
+            marginBottom: "16px",
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: "#fef2f2",
+            border: "1px solid #fecaca",
+            color: "#991b1b",
+          }}
+        >
           응답을 입력해주세요.
-        </p>
+        </div>
       )}
+
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <button
           onClick={handlePrevious}
