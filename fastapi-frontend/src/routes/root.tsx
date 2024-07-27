@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useRef } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -7,21 +8,43 @@ const API_URL = "https://opusdeisong.co.kr";
 export default function Root() {
   const [stat, setStat] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const effectRan = useRef(false);
   useEffect(() => {
-    async function getStats() {
-      setIsLoading(true);
-      try {
-        const response = await axios
-          .get(`${API_URL}/stats`)
-          .then((res) => res.data);
-        setStat(response);
-      } catch (error) {
-        console.error(error);
-      }
-      setIsLoading(false);
+    if (effectRan.current === false) {
+      effectRan.current = true; // 두 번째 호출을 방지하기 위해 true로 설정
+
+      const getStats = async () => {
+        setIsLoading(true);
+        try {
+          const response = await axios.get(`${API_URL}/stats`);
+          setStat(response.data);
+        } catch (error) {
+          console.error(error);
+          // setError('불러오기 실패 유유.');
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      getStats();
     }
-    getStats();
   }, []);
+  // useEffect(() => {
+  //   async function getStats() {
+  //     setIsLoading(true);
+  //     try {
+  //       const response = await axios
+  //         .get(`${API_URL}/stats`)
+  //         .then((res) => res.data);
+  //       setStat(response);
+  //     } catch (error) {
+  //       console.error(error);
+  //       //setError("통계 정보를 불러오는데 실패했습니다.");
+  //     }
+  //     setIsLoading(false);
+  //   }
+  //   getStats();
+  // }, []);
 
   return (
     <div
