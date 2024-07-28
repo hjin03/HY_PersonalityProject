@@ -105,9 +105,6 @@ export default function AnalysisPage() {
         setResult(analysisResult);
         setStat(statsResult);
 
-        console.log(analysisResult);
-        console.log(statsResult);
-
         if (
           analysisResult &&
           statsResult &&
@@ -117,20 +114,14 @@ export default function AnalysisPage() {
           const totalTests = statsResult.total_tests;
           const userType = analysisResult.hanyang_lion_type.type;
 
-          if (Object.hasOwn(statsResult.lion_type_percentages, userType)) {
-            const userTypePercentage =
-              statsResult.lion_type_percentages[
-                userType as keyof LionTypePercentage
-              ];
-            const approximateCount = Math.round(
-              totalTests * (userTypePercentage / 100)
-            );
-            setUserTypeCount(approximateCount);
-          } else {
-            console.error(
-              `User type "${userType}" not found in lion_type_percentages`
-            );
-          }
+          const userTypePercentage =
+            statsResult.lion_type_percentages[
+              userType as keyof LionTypePercentage
+            ];
+          const approximateCount = Math.round(
+            totalTests * (userTypePercentage / 100)
+          );
+          setUserTypeCount(approximateCount);
 
           setChartData(
             Object.entries(statsResult.lion_type_percentages)
@@ -149,9 +140,6 @@ export default function AnalysisPage() {
   }, [answers]);
 
   async function postAnswers(answers: AnswerForm): Promise<ResultType> {
-    console.log("postAnswers");
-    console.log("Post Start");
-    console.log(answers);
     try {
       const response = await axios.post<ResultType>(
         `${API_URL}/analyze_answers`,
@@ -165,7 +153,6 @@ export default function AnalysisPage() {
   }
 
   async function getStats(): Promise<StatType> {
-    console.log("Get Start");
     try {
       const response = await axios.get<StatType>(`${API_URL}/stats`);
       return response.data;
@@ -186,8 +173,6 @@ export default function AnalysisPage() {
   if (!result || !stat) {
     return <div>데이터를 불러오는 데 실패했습니다.</div>;
   }
-
-  console.log(stat);
 
   return (
     <AnalysisContainer>

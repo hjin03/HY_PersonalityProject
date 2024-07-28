@@ -70,7 +70,6 @@ export default function QuestionForm() {
 
   const onSubmit = (finalAnswers: string[]) => {
     const formattedAnswers = convertAnswersToAnswerForm(finalAnswers);
-    console.log("Submitting answers:", formattedAnswers);
     navigate("/analysis", { state: formattedAnswers });
   };
 
