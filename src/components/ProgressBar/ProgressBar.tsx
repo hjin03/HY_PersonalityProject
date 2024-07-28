@@ -1,61 +1,58 @@
-import React from "react";
-import { CSSProperties } from "react";
+import styled from "@emotion/styled";
 
 interface ProgressProps {
   currentPage: number;
   totalPages: number;
 }
 
-const ProgressBar: React.FC<ProgressProps> = ({ currentPage, totalPages }) => {
+const ContainerStyle = styled.div`
+  margin-top: 70px;
+  position: relative;
+`;
+
+const BarContainerStyle = styled.div`
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 20px;
+  position: relative;
+`;
+
+const TextStyle = styled.div`
+  margin-top: 15px;
+  text-align: right;
+  font-weight: bold;
+  color: #2c3d50;
+`;
+const ProgressBar = ({ currentPage, totalPages }: ProgressProps) => {
   const progress = (currentPage / totalPages) * 100;
 
-  const containerStyle: CSSProperties = {
-    marginTop: "70px",
-    position: "relative",
-  };
+  const LionStyle = styled.div`
+    position: absolute;
+    top: -50px;
+    left: ${progress}%;
+    font-size: 30px;
+    transition: left 0.5s ease-in-out;
+    animation: lionJump 0.5s infinite alternate;
+    z-index: 10;
+  `;
 
-  const lionStyle: CSSProperties = {
-    position: "absolute",
-    top: "-50px",
-    left: `${progress}%`,
-    transform: "translateX(-50%)",
-    fontSize: "30px",
-    transition: "left 0.5s ease-in-out",
-    animation: "lionJump 0.5s infinite alternate",
-    zIndex: 10,
-  };
-
-  const barContainerStyle: CSSProperties = {
-    width: "100%",
-    backgroundColor: "#e0e0e0",
-    borderRadius: "8px",
-    overflow: "hidden",
-    height: "20px",
-    position: "relative",
-  };
-
-  const barStyle: CSSProperties = {
-    width: `${progress}%`,
-    height: "100%",
-    backgroundColor: "#3498DB",
-    borderRadius: "8px",
-    transition: "width 0.5s ease-in-out",
-  };
-
-  const textStyle: CSSProperties = {
-    marginTop: "15px",
-    textAlign: "right",
-    fontWeight: "bold",
-    color: "#2C3D50",
-  };
+  const BarStyle = styled.div`
+    width: ${progress}%;
+    height: 100%;
+    background-color: #3498db;
+    border-radius: 8px;
+    transition: width 0.5s ease-in-out;
+  `;
 
   return (
-    <div style={containerStyle}>
-      <div style={lionStyle}>🦁</div>
-      <div style={barContainerStyle}>
-        <div style={barStyle} />
-      </div>
-      <div style={textStyle}>{Math.round(progress)}% 완료</div>
+    <ContainerStyle>
+      <LionStyle>🦁</LionStyle>
+      <BarContainerStyle>
+        <BarStyle />
+      </BarContainerStyle>
+      <TextStyle>{Math.round(progress)}% 완료</TextStyle>
       <style>
         {`
           @keyframes lionJump {
@@ -64,7 +61,7 @@ const ProgressBar: React.FC<ProgressProps> = ({ currentPage, totalPages }) => {
           }
         `}
       </style>
-    </div>
+    </ContainerStyle>
   );
 };
 

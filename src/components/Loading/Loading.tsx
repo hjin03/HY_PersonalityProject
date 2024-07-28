@@ -8,6 +8,7 @@ const LoadingSpinnerWithAdsAndDots = () => {
     content: string;
     link: string;
   }
+
   const ads: Ads[] = [
     {
       title: "쿠팡",

@@ -5,19 +5,9 @@ import LoadingSpinnerWithAdsAndDots from "../components/Loading/Loading";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import LionImage from "../components/LionImage/LionImage";
 import styled from "@emotion/styled";
+import { COLORS } from "../constants/constants";
 
-const API_URL = "https://opusdeisong.co.kr";
-
-const COLORS = [
-  "#0088FE",
-  "#00C49F",
-  "#FFBB28",
-  "#FF8042",
-  "#8884d8",
-  "#82ca9d",
-  "#a4de6c",
-  "#d0ed57",
-];
+const API_URL = process.env.REACT_APP_API_KEY;
 
 export interface AnswerForm {
   answers: Answer[];
@@ -47,29 +37,6 @@ interface StatType {
 }
 
 interface LionTypePercentage {
-  "성취 지향 사자": number;
-  "도전적 성취 사자": number;
-  "자율 성취 사자": number;
-  "자율 탐구 사자": number;
-  "독립적 성취 사자": number;
-  "즐거운 배려 사자": number;
-  "모험가 사자": number;
-  "창의적 자유 사자": number;
-  "자유로운 탐험 사자": number;
-  "전통 수호 사자": number;
-  "사회 정의 사자": number;
-  "보편적 자율 사자": number;
-  "탐색 중인 사자": number;
-  "권력 추구 사자": number;
-  "규범 준수 사자": number;
-  "다재다능한 사자": number;
-  "탐색하는 사자": number;
-  "균형 잡힌 탐구 사자": number;
-  "유연한 중립 사자": number;
-  "행복 나눔 사자": number;
-  "배려하는 성취 사자": number;
-  "즐거움 탐험 사자": number;
-  "조화로운 성취 사자": number;
   [key: string]: number; // 인덱스 시그니처
 }
 
@@ -93,10 +60,6 @@ const LionTypeSection = styled.div`
   margin-bottom: 30px;
 `;
 
-const LionDescription = styled.p`
-  color: #555;
-`;
-
 const DetailedAnalysis = styled.div`
   margin-bottom: 30px;
 `;
@@ -104,13 +67,13 @@ const DetailedAnalysis = styled.div`
 const AnalysisItem = styled.div`
   margin-bottom: 20px;
 `;
-const ItemH2 = styled.h2`
+const ItemM = styled.h2`
   color: #2c3e50;
   border-bottom: 2px solid #3498db;
   padding-bottom: 10px;
 `;
 
-const ItemH3 = styled.h3`
+const ItemS = styled.h3`
   color: #34495e;
 `;
 const TestStatistics = styled.div`
@@ -118,10 +81,6 @@ const TestStatistics = styled.div`
   padding: 20px;
   border-radius: 5px;
 `;
-
-// const UnderBar = styled.h2`
-//   border-bottom: 1.5px solid #3498db;
-// `;
 
 export default function AnalysisPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -231,33 +190,32 @@ export default function AnalysisPage() {
   console.log(stat);
 
   return (
-    // <>
     <AnalysisContainer>
       <LionTypeSection>
-        <ItemH2>나의 한양 라이언 유형은?</ItemH2>
+        <ItemM>나의 한양 라이언 유형은?</ItemM>
         <h3>{result.hanyang_lion_type?.type}</h3>
         <LionImage imageUrl={result.image_url} />
         <div style={{ fontSize: "0.5rem", color: "gray" }}>
           꾹 눌러 이미지 저장하기
         </div>
-        <LionDescription>{result.hanyang_lion_type?.details}</LionDescription>
+        <p style={{ color: "#555" }}>{result.hanyang_lion_type?.details}</p>
       </LionTypeSection>
       <DetailedAnalysis>
-        <ItemH2>상세 분석 결과</ItemH2>
+        <ItemM>상세 분석 결과</ItemM>
         <AnalysisItem>
-          <ItemH3>성격 특성</ItemH3>
+          <ItemS>성격 특성</ItemS>
           <p>{result.personality_traits}</p>
         </AnalysisItem>
         <AnalysisItem>
-          <ItemH3>핵심 가치</ItemH3>
+          <ItemS>핵심 가치</ItemS>
           <p>{result.core_values}</p>
         </AnalysisItem>
         <AnalysisItem>
-          <ItemH3>행동 패턴</ItemH3>
+          <ItemS>행동 패턴</ItemS>
           <p>{result.behavior_patterns}</p>
         </AnalysisItem>
         <AnalysisItem>
-          <ItemH3>미래 제안</ItemH3>
+          <ItemS>미래 제안</ItemS>
           <p>{result.future_suggestions}</p>
         </AnalysisItem>
       </DetailedAnalysis>

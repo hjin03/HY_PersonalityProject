@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ProgressBar from "../components/ProgressBar/ProgressBar";
 
 const MAX_CHARS = 300;
-const API_URL = "https://opusdeisong.co.kr";
+const API_URL = process.env.REACT_APP_API_KEY;
 
 interface Questions {
   questions: string[];
