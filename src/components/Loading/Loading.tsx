@@ -67,6 +67,7 @@ const LoadingSpinnerWithAdsAndDots = () => {
       setCurrentAdIndex((prevIndex) => (prevIndex + 1) % ads.length);
     }, 3000); // 3초마다 광고 변경
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
